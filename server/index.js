@@ -7,26 +7,10 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 
 const app = express()
-
-const allowedOrigins = [
-  'https://yourblogging.vercel.app',
-  'https://yourblogging.vercel.app/login',
-  'https://yourblogging.vercel.app/signup',
-  'https://yourblogging.vercel.app/create',
-  'https://yourblogging.vercel.app/blog'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: 'https://yourblogging.vercel.app',
+  credentials: true // Allow credentials
+}));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
