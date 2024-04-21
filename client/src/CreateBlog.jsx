@@ -9,7 +9,7 @@ const CreateBlog = () => {
     const [content, setContent] = useState('');
 
     const navigate = useNavigate();
-    axios.default.withCredentials = true;
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
