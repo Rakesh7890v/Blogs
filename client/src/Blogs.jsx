@@ -7,6 +7,7 @@ import red from './assets/red-heart.png';
 const Blogs = () => {
 
     const [blogs, setBlogs] = useState([]);
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         axios.get('https://yourblogging-api.vercel.app/')
