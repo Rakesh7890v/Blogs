@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const app = express()
 app.use(cors(
     {
-        "origin": ["https://yourblogging.vercel.app/"],
+        "origin": ["https://yourblogging.vercel.app"],
         "methods": ["POST","GET"],
         "credentials": true
     }
