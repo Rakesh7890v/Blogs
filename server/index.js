@@ -8,7 +8,10 @@ const bodyParser = require('body-parser');
 
 const app = express()
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://yourblogging.vercel.app', // Replace this with your frontend URL
+    credentials: true, 
+}));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
