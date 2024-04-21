@@ -10,9 +10,9 @@ const app = express()
 
 const allowedOrigins = [
   'https://yourblogging.vercel.app',
-  'https://yourblogging.vercel.app/login'
-  'https://yourblogging.vercel.app/signup'
-  'https://yourblogging.vercel.app/create'
+  'https://yourblogging.vercel.app/login',
+  'https://yourblogging.vercel.app/signup',
+  'https://yourblogging.vercel.app/create',
   'https://yourblogging.vercel.app/blog'
 ];
 
