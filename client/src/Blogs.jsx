@@ -7,9 +7,10 @@ import red from './assets/red-heart.png';
 const Blogs = () => {
 
     const [blogs, setBlogs] = useState([]);
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        axios.get('http://localhost:3005')
+        axios.get('https://yourblogging-api.vercel.app/')
         .then(result => {
             const loadedBlogs = result.data.map(blog => {
                 const liked = localStorage.getItem(`Liked_${blog._id}`);
@@ -28,14 +29,14 @@ const Blogs = () => {
         localStorage.setItem(`Liked_${id}`, JSON.stringify(updatedBlogs[index].liked));
     
         if (updatedBlogs[index].liked) {
-            axios.get(`http://localhost:3005/getLike/${id}`)
+            axios.get(`https://yourblogging-api.vercel.app/getLike/${id}`)
                 .then(result => {
                     const currentLikes = result.data.likes;
                     const updatedLikes = currentLikes + 1;
                     updatedBlogs[index].likes = updatedLikes;
                     setBlogs(updatedBlogs);
     
-                    axios.post(`http://localhost:3005/updateLike/${id}`, { like: updatedLikes })
+                    axios.post(`https://yourblogging-api.vercel.app/updateLike/${id}`, { like: updatedLikes })
                         .then(result => console.log(result))
                         .catch(err => console.log(err));
                 })
@@ -46,7 +47,7 @@ const Blogs = () => {
             updatedBlogs[index].likes = updatedLikes;
             setBlogs(updatedBlogs);
     
-            axios.post(`http://localhost:3005/updateLike/${id}`, { like: updatedLikes })
+            axios.post(`https://yourblogging-api.vercel.app/updateLike/${id}`, { like: updatedLikes })
                 .then(result => console.log(result))
                 .catch(err => console.log(err));
         }

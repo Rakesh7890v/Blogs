@@ -9,9 +9,11 @@ const Signup = () => {
     const [pass, setPass] = useState([]);
     const navigate = useNavigate();
 
+    axios.defaults.withCredentials = true;
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3005/signup', {name, email, pass})
+        axios.post('https://yourblogging-api.vercel.app/signup', {name, email, pass})
         .then(result => {
             console.log(result);
             navigate('/login')

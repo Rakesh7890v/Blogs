@@ -17,10 +17,12 @@ const Profile = () => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState(false);
 
+  axios.defaults.withCredentials = true;
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const email = queryParams.get('email');
-    axios.get('http://localhost:3005/getProfile',{ params: {email: email}})
+    axios.get('https://yourblogging-api.vercel.app/getProfile',{ params: {email: email}})
     .then(result => {
       setName(result.data.name)
       setEmail(result.data.email)
@@ -31,7 +33,7 @@ const Profile = () => {
 
   const createPost = (newImage) => {
     const photo = newImage.myFile;
-    axios.post('http://localhost:3005/setProfile', { uemail, photo })
+    axios.post('https://yourblogging-api.vercel.app/setProfile', { uemail, photo })
     .then(result => {
       setPhoto(result.data.photo);
       setShowForm(false);
@@ -43,7 +45,7 @@ const Profile = () => {
   const handleShow = (e) => {
     e.preventDefault();
     console.log(name);
-    axios.get(`http://localhost:3005/getBlogs/${name}`,)
+    axios.get(`https://yourblogging-api.vercel.app/getBlogs/${name}`,)
     .then(result => {
       console.log(result.data);
       setMyblogs(result.data);
@@ -79,14 +81,14 @@ const Profile = () => {
     localStorage.setItem(`Liked_${id}`, JSON.stringify(updatedBlogs[index].liked));
 
     if (updatedBlogs[index].liked) {
-        axios.get(`http://localhost:3005/getLike/${id}`)
+        axios.get(`https://yourblogging-api.vercel.app/getLike/${id}`)
             .then(result => {
                 const currentLikes = result.data.likes;
                 const updatedLikes = currentLikes + 1;
                 updatedBlogs[index].likes = updatedLikes;
                 setBlogs(updatedBlogs);
 
-                axios.post(`http://localhost:3005/updateLike/${id}`, { like: updatedLikes })
+                axios.post(`https://yourblogging-api.vercel.app/updateLike/${id}`, { like: updatedLikes })
                     .then(result => console.log(result))
                     .catch(err => console.log(err));
             })
@@ -97,7 +99,7 @@ const Profile = () => {
           updatedBlogs[index].likes = updatedLikes;
           setBlogs(updatedBlogs);
 
-          axios.post(`http://localhost:3005/updateLike/${id}`, { like: updatedLikes })
+          axios.post(`https://yourblogging-api.vercel.app/updateLike/${id}`, { like: updatedLikes })
               .then(result => console.log(result))
               .catch(err => console.log(err));
         }

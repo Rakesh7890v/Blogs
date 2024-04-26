@@ -6,10 +6,10 @@ const Login = () => {
     const [email, setEmail] = useState([]);
     const [pass, setPass] = useState([]);
     const [err, setErr] = useState(false);
-
+    axios.defaults.withCredentials = true;
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3005/login',{email, pass})
+        axios.post('https://yourblogging-api.vercel.app/login',{email, pass})
         .then(result => {
             console.log(result)
             if (result.data === "Success"){

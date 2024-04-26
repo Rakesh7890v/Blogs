@@ -9,11 +9,12 @@ const CreateBlog = () => {
     const [content, setContent] = useState('');
 
     const navigate = useNavigate();
+    axios.defaults.withCredentials = true;
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         const email = queryParams.get('email');
-        axios.get('http://localhost:3005/getProfile',{ params: {email: email}})
+        axios.get('https://yourblogging-api.vercel.app/getProfile',{ params: {email: email}})
         .then(result => {
             setName(result.data.name)
             setPhoto(result.data.photo)
@@ -23,7 +24,7 @@ const CreateBlog = () => {
 
     const Create = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3005/create', {photo, name, title, content})
+        axios.post('https://yourblogging-api.vercel.app/create', {photo, name, title, content})
         .then(result => {
             console.log(result);
             navigate('/blog');
