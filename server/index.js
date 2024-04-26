@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(cors({
   origin: 'https://yourblogging.vercel.app',
   methods: ['POST', 'GET', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers if needed
-  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+  credentials: true 
 }));
 
 
