@@ -13,10 +13,8 @@ app.use(express.json());
 app.use(cors({
   origin: 'https://yourblogging.vercel.app',
   methods: ['POST', 'GET', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'], 
   credentials: true 
 }));
-
 
 mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/')
     .then(() => {
