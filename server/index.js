@@ -7,14 +7,13 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 
 const app = express()
-app.use(cors({
-  origin: '*',
-  credentials: true // Allow credentials
-}));
-
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
+app.use(cors({
+  origin: 'https://yourblogging.vercel.app',
+  credentials: true
+}));
 
 mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/')
     .then(() => {
