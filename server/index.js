@@ -1,57 +1,68 @@
-const BlogModel = require('./models/Blogs')
-const LoginModel = require('./models/Login')
-const ProfileModel = require('./models/Profile')
-const express = require('express')
-const cors = require('cors')
-const mongoose = require('mongoose')
+const BlogModel = require('./models/Blogs');
+const LoginModel = require('./models/Login');
+const ProfileModel = require('./models/Profile');
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const app = express()
+const app = express();
+
 const corsOptions = {
     origin: 'https://yourblogging.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization'
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
 };
+
 app.use(cors(corsOptions));
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
 
 mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/')
     .then(() => {
-        console.log("DB is connected")
+        console.log("DB is connected");
     })
     .catch((err) => {
-        console.log(err)
-    })
+        console.log(err);
+    });
 
-app.options('*',cors(corsOptions));
+app.options('*', cors(corsOptions));
 
-app.get('/', (req,res) => {
+const setCorsHeaders = (res) => {
+    res.setHeader("Access-Control-Allow-Origin", "https://yourblogging.vercel.app");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type, authorization");
+    res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
+};
+
+app.get('/', (req, res) => {
+    setCorsHeaders(res);
     BlogModel.find({})
-    .then(blogs => res.json(blogs))
-    .catch(err => res.json(err))
-})
+        .then(blogs => res.json(blogs))
+        .catch(err => res.json(err));
+});
 
 app.post('/create', (req, res) => {
+    setCorsHeaders(res);
     BlogModel.create(req.body)
-    .then(blogs => res.json(blogs))
-    .catch(err => res.json(err))
-})
+        .then(blogs => res.json(blogs))
+        .catch(err => res.json(err));
+});
 
 app.get('/getBlogs/:name', (req, res) => {
-    const {name} = req.params;
-    console.log(name)
-    BlogModel.find({name: name})
-    .then(user => {
-        res.json(user);
-        console.log(user);
-    })
-    .catch(err => console.log(err))
-})
+    setCorsHeaders(res);
+    const { name } = req.params;
+    BlogModel.find({ name: name })
+        .then(user => res.json(user))
+        .catch(err => console.log(err));
+});
 
 app.post('/signup', (req, res) => {
+    setCorsHeaders(res);
     LoginModel.create(req.body)
         .then(login => {
             const { name, email } = req.body;
@@ -61,56 +72,58 @@ app.post('/signup', (req, res) => {
         .catch(err => res.json(err));
 });
 
-app.post('/login', (req,res) => {
-    const {email, pass} = req.body;
-    LoginModel.findOne({email: email})
-    .then(user => {
-        if(user){
-            if(user.pass === pass){
-                res.json("Success")
+app.post('/login', (req, res) => {
+    setCorsHeaders(res);
+    const { email, pass } = req.body;
+    LoginModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                if (user.pass === pass) {
+                    res.json("Success");
+                } else {
+                    res.json("The password is incorrect");
+                }
             } else {
-                res.json("The password is incorrect")
+                res.json("No record is existed");
             }
-        } else {
-            res.json("No record is existed");
-        }
-    })
-})
+        })
+        .catch(err => res.json(err));
+});
 
-app.get('/getProfile',(req, res) => {
+app.get('/getProfile', (req, res) => {
+    setCorsHeaders(res);
     const email = req.query.email;
-    ProfileModel.findOne({email: email})
-    .then(profile => {res.json(profile)})
-    .catch(err => res.json(err));
-})
+    ProfileModel.findOne({ email: email })
+        .then(profile => res.json(profile))
+        .catch(err => res.json(err));
+});
 
-app.get('/getLike/:id', (req,res) => {
+app.get('/getLike/:id', (req, res) => {
+    setCorsHeaders(res);
     const id = req.params.id;
-    BlogModel.findById({_id: id})
-    .then(likes => res.json(likes))
-    .catch(err => res.json(err))
-})
+    BlogModel.findById({ _id: id })
+        .then(likes => res.json(likes))
+        .catch(err => res.json(err));
+});
 
 app.post('/setProfile', async (req, res) => {
+    setCorsHeaders(res);
     const email = req.body.uemail;
     const photo = req.body.photo;
     await ProfileModel.findOneAndUpdate({ email: email }, { photo: photo })
-    .then(images => { 
-        res.json(images)
-    })
-    .catch(err => res.json(err))
-})
+        .then(images => res.json(images))
+        .catch(err => res.json(err));
+});
 
 app.post('/updateLike/:id', (req, res) => {
+    setCorsHeaders(res);
     const id = req.params.id;
     const updatedLikes = req.body.like;
-    console.log("Updated likes:",updatedLikes);
     BlogModel.findByIdAndUpdate({ _id: id }, { likes: updatedLikes })
-    .then(likes => {res.json(likes)
-    console.log(likes)})
-    .catch(err => res.json(err))
+        .then(likes => res.json(likes))
+        .catch(err => res.json(err));
 });
 
 app.listen(3005, () => {
-    console.log('Server is Running')
-})
+    console.log('Server is Running');
+});
