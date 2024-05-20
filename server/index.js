@@ -7,14 +7,15 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 
 const app = express()
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(express.json());
 app.use(cors({
     origin: 'https://yourblogging.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
 }));
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json());
 
 mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/')
     .then(() => {
@@ -23,6 +24,8 @@ mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mong
     .catch((err) => {
         console.log(err)
     })
+
+app.options('*',cors());
 
 app.get('/', (req,res) => {
     BlogModel.find({})
