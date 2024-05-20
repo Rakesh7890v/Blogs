@@ -8,14 +8,17 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// Configure CORS
 const corsOptions = {
     origin: 'https://yourblogging.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
 };
-
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -29,32 +32,31 @@ mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mong
         console.log(err);
     });
 
-app.options('*', cors(corsOptions));
-
-const setCorsHeaders = (res) => {
+// Set CORS headers manually for each route
+const setCorsHeaders = (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "https://yourblogging.vercel.app");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Max-Age", "1800");
     res.setHeader("Access-Control-Allow-Headers", "content-type, authorization");
     res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
+    next();
 };
 
+app.use(setCorsHeaders);
+
 app.get('/', (req, res) => {
-    setCorsHeaders(res);
     BlogModel.find({})
         .then(blogs => res.json(blogs))
         .catch(err => res.json(err));
 });
 
 app.post('/create', (req, res) => {
-    setCorsHeaders(res);
     BlogModel.create(req.body)
         .then(blogs => res.json(blogs))
         .catch(err => res.json(err));
 });
 
 app.get('/getBlogs/:name', (req, res) => {
-    setCorsHeaders(res);
     const { name } = req.params;
     BlogModel.find({ name: name })
         .then(user => res.json(user))
@@ -62,7 +64,6 @@ app.get('/getBlogs/:name', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-    setCorsHeaders(res);
     LoginModel.create(req.body)
         .then(login => {
             const { name, email } = req.body;
@@ -73,7 +74,6 @@ app.post('/signup', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    setCorsHeaders(res);
     const { email, pass } = req.body;
     LoginModel.findOne({ email: email })
         .then(user => {
@@ -91,7 +91,6 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/getProfile', (req, res) => {
-    setCorsHeaders(res);
     const email = req.query.email;
     ProfileModel.findOne({ email: email })
         .then(profile => res.json(profile))
@@ -99,7 +98,6 @@ app.get('/getProfile', (req, res) => {
 });
 
 app.get('/getLike/:id', (req, res) => {
-    setCorsHeaders(res);
     const id = req.params.id;
     BlogModel.findById({ _id: id })
         .then(likes => res.json(likes))
@@ -107,7 +105,6 @@ app.get('/getLike/:id', (req, res) => {
 });
 
 app.post('/setProfile', async (req, res) => {
-    setCorsHeaders(res);
     const email = req.body.uemail;
     const photo = req.body.photo;
     await ProfileModel.findOneAndUpdate({ email: email }, { photo: photo })
@@ -116,7 +113,6 @@ app.post('/setProfile', async (req, res) => {
 });
 
 app.post('/updateLike/:id', (req, res) => {
-    setCorsHeaders(res);
     const id = req.params.id;
     const updatedLikes = req.body.like;
     BlogModel.findByIdAndUpdate({ _id: id }, { likes: updatedLikes })
