@@ -7,11 +7,12 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 
 const app = express()
-app.use(cors({
+const corsOptions = {
     origin: 'https://yourblogging.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization'
-}));
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -25,7 +26,7 @@ mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mong
         console.log(err)
     })
 
-app.options('*',cors());
+app.options('*',cors(corsOptions));
 
 app.get('/', (req,res) => {
     BlogModel.find({})
