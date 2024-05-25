@@ -311,6 +311,9 @@ body {
   outline: none;
   width: 250px;
 }
+.inputs input:focus {
+  border: 2px solid blue;
+}
 .inputs label {
   font-size: 1rem;
   font-weight: 400;
