@@ -18,6 +18,7 @@ app.use(cors({
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const mongoURI = 'mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/';
 
@@ -28,6 +29,10 @@ mongoose.connect(mongoURI)
 app.get('/', (req, res) => {
     res.json("Hello")
 })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
 
 app.get('/blogs', (req, res) => {
     BlogModel.find({})
