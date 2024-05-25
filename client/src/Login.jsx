@@ -1,19 +1,21 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const [email, setEmail] = useState([]);
     const [pass, setPass] = useState([]);
     const [err, setErr] = useState(false);
     axios.defaults.withCredentials = true;
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('https://yourblogging-api.vercel.app/login',{email, pass})
         .then(result => {
-            console.log(result)
+            console.log(result.data);
             if (result.data === "Success"){
-                window.location = `/profile?email=${email}`;
+                navigate(`/profile?email=${email}`);
             } else {
                 setErr(true);
             }
