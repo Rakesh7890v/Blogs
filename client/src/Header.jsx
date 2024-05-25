@@ -39,7 +39,6 @@ const Header = () => {
                 {!showMenu && <ul>
                     <li><Link to='/' className='link'>Home</Link></li>
                     <li><Link to='/blog' className='link'>Blogs</Link></li>
-                    <li><Link to='/create' className='link'>Create</Link></li>
                     <li className='login'><Link to='/login' className='link'>Profile</Link></li>
                 </ul>}
             </div>
@@ -47,7 +46,6 @@ const Header = () => {
                 <ul className='menus'>
                 {menuItems && (<FontAwesomeIcon icon={faTimes} className='fatime' onClick={handleTimes}/>)}                    <li><Link to='/' className='link' onClick={handleClose}>Home</Link></li>
                 <li><Link to='/blog' className='link' onClick={handleClose}>Blogs</Link></li>
-                <li><Link to='/create' className='link' onClick={handleClose}>Create</Link></li>
                 <li className='login'><Link to='/login' className='link' onClick={handleClose}>Profile</Link></li>
             </ul>
             </div>}

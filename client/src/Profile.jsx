@@ -5,6 +5,7 @@ import red from './assets/red-heart.png';
 import user from './assets/user.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
 
@@ -69,9 +70,10 @@ const Profile = () => {
     setPostImage({...postImage, myFile: base64})
   }
 
+  const navigate = useNavigate();
   const handleClick = (e) => {
     e.preventDefault();
-    window.location = `/create?email=${uemail}`
+    navigate(`/create?email=${uemail}`);
   }  
 
   const handleLikeClick = (index, id) => {
