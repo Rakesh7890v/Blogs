@@ -8,41 +8,21 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Configure CORS
-const corsOptions = {
-    origin: 'https://yourblogging.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
-    credentials: true
-};
-app.use(cors(corsOptions));
-
-// Handle preflight requests
-app.options('*', cors(corsOptions));
-
+app.use(cors({
+  origin: 'https://hospital-managments.vercel.app',
+  methods: 'GET,POST,PUT',
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true
+}));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/')
-    .then(() => {
-        console.log("DB is connected");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+const mongoURI = 'mongodb+srv://rishirakesh587:Rakesh.v109@cluster0.ybynxnt.mongodb.net/';
 
-// Set CORS headers manually for each route
-const setCorsHeaders = (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://yourblogging.vercel.app");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type, authorization");
-    res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    next();
-};
-
-app.use(setCorsHeaders);
+mongoose.connect(mongoURI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
 
 app.get('/', (req, res) => {
     BlogModel.find({})
