@@ -26,6 +26,10 @@ mongoose.connect(mongoURI)
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
 app.get('/', (req, res) => {
+    res.json("Hello")
+})
+
+app.get('/blogs', (req, res) => {
     BlogModel.find({})
         .then(blogs => res.json(blogs))
         .catch(err => res.json(err));

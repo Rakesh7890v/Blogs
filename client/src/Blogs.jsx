@@ -10,7 +10,7 @@ const Blogs = () => {
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        axios.get('https://yourblogging-api.vercel.app/')
+        axios.get('https://yourblogging-api.vercel.app/blogs')
         .then(result => {
             const loadedBlogs = result.data.map(blog => {
                 const liked = localStorage.getItem(`Liked_${blog._id}`);
